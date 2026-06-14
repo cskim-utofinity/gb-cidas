@@ -256,9 +256,11 @@
   .changelog-version{flex-shrink:0;width:96px;}
   .changelog-version .v{font-family:var(--font-family-mono);font-size:13px;font-weight:700;color:var(--color-primary);}
   .changelog-version .d{font-size:11px;color:var(--color-text-muted);margin-top:2px;}
-  .changelog-content{font-size:13.5px;color:var(--color-text-sub);line-height:1.65;}
+  .changelog-content{flex:1;min-width:0;font-size:13.5px;color:var(--color-text-sub);line-height:1.65;}
   .changelog-content ul{margin:6px 0 0 16px;}
   .changelog-content li{margin-bottom:4px;}
+  /* 긴 URL 등 줄바꿈 불가 토큰이 인라인 code에 들어가도 가로 넘침 없이 줄바꿈 */
+  .changelog-content code{overflow-wrap:anywhere;word-break:break-word;}
 
   /* ── Roadmap ── */
   .rm-version{margin-top:var(--space-8);}
@@ -1290,6 +1292,7 @@ result <span class="tok-op">=</span> cs.<span class="tok-fn">sql</span>(<span cl
           <li><strong>flat → src 레이아웃 전환</strong>: <code>cskim/</code> → <code>src/cidas/</code>. <code>pyproject.toml</code> <code>name="nice-cidas"</code>·<code>package-dir</code>·<code>packages.find</code>, <code>__version__</code>은 <code>importlib.metadata.version("nice-cidas")</code> 연동. 번들 스키마 <code>cidas/_schemas/*.toml</code></li>
           <li><strong>새 repo 이식</strong>: 기존 <code>cskim_py_lib</code> 히스토리를 <code>nice-cidas</code>로 이식, 옛 repo는 아카이브 보관. re-export shim 없음(사용자가 직접 마이그레이션)</li>
           <li><strong>브랜드 에셋 추가</strong>: 사이다 컵 아이콘·Open Graph 이미지(<code>assets/cidas-icon.*</code>·<code>cidas-og.*</code>). README 상단 배너, 본 가이드북 hero 반영</li>
+          <li><strong>모듈 docstring 복원</strong>: rename 과정에서 누락됐던 모듈 최상단 docstring을 원본 기준으로 복원. <code>utils</code>·<code>system</code>·<code>data</code>·<code>nw</code> 4개 모듈에 공개 함수 목록·동작 요약 추가, <code>__init__.py</code> 패키지 docstring을 모듈별 함수 카탈로그 상세본으로 교체(<code>import cidas as cs</code> 반영). 함수 단위 docstring은 기존과 동일</li>
           <li><strong>마이그레이션</strong>: <code>import cskim as cs</code> → <code>import cidas as cs</code>로 변경 후 <code>uv add</code>로 재설치</li>
         </ul>
       </div>
