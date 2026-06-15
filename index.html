@@ -1139,39 +1139,41 @@ df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_css</span>(nw_n
 
     <div class="rm-version">
       <div class="rm-version-head">
-        <span class="rm-v">v0.3.x</span>
-        <span class="rm-title">패키지 rename (cskim → cidas / nice-cidas) + src 레이아웃</span>
-        <span class="rm-chip done">완료</span>
-      </div>
-      <p class="rm-goal"><strong>목표</strong>: behavior-zero rename 릴리스. 기능 변경 없이 패키지명·구조 정비</p>
-      <ul class="rm-list">
-        <li class="done"><strong>배포명 nice-cidas / import명 cidas</strong> — <code>scikit-learn</code>/<code>sklearn</code> 패턴, alias <code>cs</code> 유지</li>
-        <li class="done"><strong>flat → src 레이아웃</strong> — <code>src/cidas/</code>, <code>pyproject.toml</code> src 레이아웃 설정</li>
-        <li class="done"><strong>새 repo nice-cidas</strong> — 기존 <code>cskim_py_lib</code> 히스토리 이식, 옛 repo v0.2.2 아카이브 보관</li>
-        <li class="done"><strong>re-export shim 없음</strong> — <code>cskim</code>이 <code>cidas</code>를 re-export하지 않음. 사용자가 직접 마이그레이션</li>
-        <li class="done">문서 전체 갱신 (README, CHANGELOG, docs/*.md, SKILL.md, CLAUDE.md)</li>
-      </ul>
-    </div>
-
-    <div class="rm-version">
-      <div class="rm-version-head">
         <span class="rm-v">v0.4.x</span>
-        <span class="rm-title">read_scr 구분자 포맷 지원 + SQL 인터페이스 (Proc SQL)</span>
+        <span class="rm-title">read 함수군 인터페이스 표준화</span>
         <span class="rm-chip planned">예정</span>
       </div>
-      <p class="rm-goal"><strong>목표</strong>: <code>read_scr</code> 포맷 대응 완성 및 SAS <code>Proc SQL</code> 이식</p>
+      <p class="rm-goal"><strong>목표</strong>: read 함수군(<code>read_csv</code>·<code>read_query</code>·<code>read_scr</code>·<code>read_css</code>)의 인터페이스 일관화 — <code>read_scr</code> 구분자 포맷 대응, 컬럼-정보 파라미터 통일, <code>backend</code> 약어</p>
       <ul class="rm-list">
-        <li class="todo"><strong>read_scr 구분자 포맷 지원</strong>: 현재는 고정길이(fixed-width) 포맷만 지원. <code>read_query</code>·<code>read_css</code>와 동일하게 구분자(delimiter) 포맷도 읽을 수 있도록 확장. 포맷 자동 감지 또는 <code>fmt</code> 파라미터로 명시 선택</li>
-        <li class="todo">구분자 포맷용 스키마 구조 정의 (<code>scores.toml</code>에 <code>fmt</code> 필드 추가 또는 별도 테이블)</li>
-        <li class="todo"><strong>DuckDB 연동</strong>: <code>pyproject.toml</code>에 <code>duckdb</code> 추가, <code>polars</code>·<code>pyarrow</code> 버전 정합성 확인. <code>read_css</code>·<code>read_query</code> 결과를 DuckDB In-Memory DB로 직접 로드하는 유틸 추가</li>
-        <li class="todo"><strong>sql() 함수 구현</strong>: DuckDB를 백엔드로, <code>SELECT</code> 결과를 Polars DataFrame으로 반환</li>
-        <li class="todo">DuckDB ↔ Polars Zero-Copy 전환 (Apache Arrow 공유 메모리)</li>
-        <li class="todo">쿼리 결과 로깅 (건수, 컬럼수, 소요시간, 메모리 변화)</li>
+        <li class="todo"><strong>read_scr 구분자 포맷 지원</strong>: 고정길이(fixed-width) 외 구분자(delimiter) 포맷도 읽도록 확장(<code>fmt</code> 파라미터). <code>scores.toml</code> 필드 서술자를 named-key inline table로 이주(v0.7 가명처리 메타 슬롯 수용 확장형)</li>
+        <li class="todo"><strong>공통 <code>dtypes={컬럼: dtype}</code> override 도입</strong> — 각 함수의 기존 dtype 해소 위에 층으로 적용해 일부 컬럼만 덮어쓰기</li>
+        <li class="todo"><code>read_csv</code>를 <code>_DTYPE_SPEC</code> 어휘로 편입 + <code>int_cols</code>/<code>str_cols</code>를 deprecated shorthand로 강등</li>
+        <li class="todo"><code>read_css</code> <code>str_cols</code> 모드스위치 해소(<code>dtypes</code>는 css.toml lookup 위 override) + <code>str_cols</code> deprecate</li>
+        <li class="todo"><code>key_cols</code> 파라미터명 공통화 — str 강제는 <code>read_scr</code>·<code>read_css</code> 한정, <code>read_csv</code>·<code>read_query</code>는 dtype 해소 준수</li>
+        <li class="todo"><strong>하위호환 — 매번 안내</strong>: deprecated 파라미터·shorthand 안내는 기존 deprecated 함수(<code>infile_*</code>·<code>merge_seq</code> → <code>deprecated_alias</code>)와 동일하게 <strong>쓸 때마다</strong> 출력(프로세스당 1회인 <code>notify_deprecated_once</code> 아님)</li>
+        <li class="todo"><strong><code>backend</code> 약어 허용</strong>: <code>'pandas'</code>→<code>'pd'</code>, <code>'polars'</code>→<code>'pl'</code></li>
       </ul>
       <pre data-lang="python"><code><span class="tok-cmt"># read_scr — 구분자 포맷</span>
 df <span class="tok-op">=</span> cs.<span class="tok-fn">read_scr</span>(nw_no<span class="tok-op">=</span><span class="tok-str">"12345"</span>, score_cd<span class="tok-op">=</span><span class="tok-str">"SC_001"</span>, fmt<span class="tok-op">=</span><span class="tok-str">"delimited"</span>)
 
-<span class="tok-cmt"># sql() — DuckDB 백엔드, Polars 반환</span>
+<span class="tok-cmt"># 공통 dtypes override + backend 약어</span>
+df <span class="tok-op">=</span> cs.<span class="tok-fn">read_csv</span>(<span class="tok-str">"a.txt"</span>, dtypes<span class="tok-op">=</span>{<span class="tok-str">"cnt"</span>: <span class="tok-str">"int8"</span>, <span class="tok-str">"amt"</span>: <span class="tok-str">"float64"</span>}, backend<span class="tok-op">=</span><span class="tok-str">"pl"</span>)</code></pre>
+    </div>
+
+    <div class="rm-version">
+      <div class="rm-version-head">
+        <span class="rm-v">v0.5.x</span>
+        <span class="rm-title">SQL 인터페이스 (Proc SQL)</span>
+        <span class="rm-chip planned">예정</span>
+      </div>
+      <p class="rm-goal"><strong>목표</strong>: SAS <code>Proc SQL</code>을 DuckDB 백엔드로 이식</p>
+      <ul class="rm-list">
+        <li class="todo"><strong>DuckDB 연동</strong>: <code>pyproject.toml</code>에 <code>duckdb</code> 추가, <code>read_css</code>·<code>read_query</code> 결과를 DuckDB In-Memory DB로 로드하는 유틸</li>
+        <li class="todo"><strong>sql() 함수 구현</strong>: DuckDB를 백엔드로, <code>SELECT</code> 결과를 Polars DataFrame으로 반환</li>
+        <li class="todo">DuckDB ↔ Polars Zero-Copy 전환 (Apache Arrow 공유 메모리)</li>
+        <li class="todo">쿼리 결과 로깅 (건수, 컬럼수, 소요시간, 메모리 변화)</li>
+      </ul>
+      <pre data-lang="python"><code><span class="tok-cmt"># sql() — DuckDB 백엔드, Polars 반환</span>
 result <span class="tok-op">=</span> cs.<span class="tok-fn">sql</span>(<span class="tok-str">"""
     SELECT Region, SUM(Amount) AS Total_Sales
     FROM sales_data
@@ -1182,31 +1184,29 @@ result <span class="tok-op">=</span> cs.<span class="tok-fn">sql</span>(<span cl
 
     <div class="rm-version">
       <div class="rm-version-head">
-        <span class="rm-v">v0.5.x</span>
+        <span class="rm-v">v0.6.x</span>
         <span class="rm-title">Data Step 이식 (코드 표준화)</span>
         <span class="rm-chip planned">예정</span>
       </div>
-      <p class="rm-goal"><strong>목표</strong>: SAS <code>Data Step</code>의 주요 패턴을 Polars 표현식으로 매핑한 헬퍼 제공</p>
+      <p class="rm-goal"><strong>목표</strong>: SAS <code>Data Step</code> 패턴을 네이티브 <code>pl.DataFrame</code>에 등록한 <code>.cs</code> 네임스페이스 메서드로 제공. Polars 기본 메서드와 자유롭게 체이닝하며 SAS LOG식 단계별 로그 출력</p>
       <ul class="rm-list">
-        <li class="todo">조건부 처리 (<code>IF-THEN/ELSE</code>) → <code>pl.when().then().otherwise()</code> 래퍼</li>
-        <li class="todo">누적·상태유지 연산 (<code>RETAIN</code>) → Polars 누적함수 / DuckDB 윈도우 함수 래퍼</li>
-        <li class="todo">첫행·마지막행 (<code>FIRST./LAST.</code>) → <code>pl.is_first_distinct()</code> / <code>pl.is_last_distinct()</code> 래퍼</li>
-        <li class="todo">각 헬퍼에 SAS 대응 주석 및 사용 예시 문서화</li>
+        <li class="todo"><code>pl.api.register_dataframe_namespace("cs")</code> 등록 + <code>import cidas</code> 시 자동 로드</li>
+        <li class="todo">조건부 처리: <code>case_when</code> / <code>cut</code></li>
+        <li class="todo">첫행·마지막행: <code>add_first_flag</code> / <code>add_last_flag</code> + <code>keep_first</code> / <code>keep_last</code></li>
+        <li class="todo">누적·상태유지: <code>cumsum</code> / <code>row_number</code></li>
+        <li class="todo"><strong><code>to_csv</code> 신규</strong> + <code>concat</code>·<code>merge</code>·<code>to_parquet</code>·<code>to_csv</code>의 <code>.cs</code> 미러 — read → 가공 → 저장을 한 체인으로</li>
+        <li class="todo"><strong>전역 로그 제어 <code>verbose=True/False</code></strong> (구 '로그 강화' 흡수) — 표준 로그 포맷·<code>read_*</code>/<code>merge</code> 로깅은 <code>df_summary</code>로 v0.2.0 선반영됨</li>
       </ul>
-    </div>
+      <pre data-lang="python"><code><span class="tok-kw">import</span> polars <span class="tok-kw">as</span> pl
+<span class="tok-kw">import</span> cidas <span class="tok-kw">as</span> cs        <span class="tok-cmt"># .cs 네임스페이스 자동 등록</span>
 
-    <div class="rm-version">
-      <div class="rm-version-head">
-        <span class="rm-v">v0.6.x</span>
-        <span class="rm-title">로그 강화</span>
-        <span class="rm-chip progress">일부 선반영</span>
-      </div>
-      <p class="rm-goal"><strong>목표</strong>: SAS LOG 창과 유사한 수준의 처리 단계별 로그를 모든 주요 함수에 제공</p>
-      <ul class="rm-list">
-        <li class="done">표준 로그 포맷 정의 (처리 단계 라벨 / 건수·컬럼수 / 메모리) — <code>utils.df_summary</code>로 <code>--&gt; {라벨}: {행}행 {열}열 // {GB}GB</code> 확정 (v0.2.0 선반영)</li>
-        <li class="done"><code>read_*</code>·<code>concat</code>·<code>merge</code>에 공통 로그 레이어(<code>df_summary</code>) 적용 — <code>sql()</code>·집계 함수는 해당 기능 구현 시 동일 헬퍼 적용 예정</li>
-        <li class="todo">로그 레벨 옵션(<code>verbose=True/False</code>) 추가 — 함수별 <code>chk_memory</code>/<code>mem</code> 인자로 메모리 표시 제어는 가능, 전역 verbose는 미구현</li>
-      </ul>
+df <span class="tok-op">=</span> (
+    df.<span class="tok-fn">sort</span>([<span class="tok-str">"rbc_no"</span>, <span class="tok-str">"base_date"</span>])
+      .cs.<span class="tok-fn">cut</span>(<span class="tok-str">"score"</span>, bins<span class="tok-op">=</span>[<span class="tok-num">600</span>, <span class="tok-num">700</span>], labels<span class="tok-op">=</span>[<span class="tok-str">"C"</span>, <span class="tok-str">"B"</span>, <span class="tok-str">"A"</span>], out<span class="tok-op">=</span><span class="tok-str">"grade"</span>)
+      .cs.<span class="tok-fn">cumsum</span>(<span class="tok-str">"bal"</span>, by<span class="tok-op">=</span><span class="tok-str">"rbc_no"</span>, out<span class="tok-op">=</span><span class="tok-str">"cum_bal"</span>)   <span class="tok-cmt"># RETAIN</span>
+      .cs.<span class="tok-fn">keep_last</span>(by<span class="tok-op">=</span><span class="tok-str">"rbc_no"</span>)                  <span class="tok-cmt"># if last.rbc_no then output</span>
+      .cs.<span class="tok-fn">to_csv</span>(<span class="tok-str">"out/result.txt"</span>)
+)</code></pre>
     </div>
 
     <div class="rm-version">
@@ -1220,6 +1220,26 @@ result <span class="tok-op">=</span> cs.<span class="tok-fn">sql</span>(<span cl
         <li class="todo">각 부서 주요 체크리스트를 함수 옵션으로 구현 (<code>validate=True</code>)</li>
         <li class="todo">전체 데이터셋 대상 통합 검증 함수 (<code>cs.validate()</code>) 구현</li>
         <li class="todo">검증 결과 리포트 출력 (통과/실패 항목, 오류 위치)</li>
+        <li class="todo"><strong>가명처리 신청 Excel 양식 자동 생성</strong> (<code>cs.pseudonym_form()</code>): read 시점 메타를 최종 컬럼까지 전파(<code>track_meta</code> + <code>cs.rename</code>)하고, css/score/query 도메인 마스터를 통합 lookup해 <code>deid_policy</code> 적용 후 신청서(xlsx) 출력</li>
+      </ul>
+      <pre data-lang="python"><code><span class="tok-cmt"># 메타 전파 → 가명처리 신청서 자동 생성</span>
+df, meta <span class="tok-op">=</span> cs.<span class="tok-fn">read_css</span>(..., track_meta<span class="tok-op">=</span><span class="tok-kw">True</span>)
+df, meta <span class="tok-op">=</span> cs.<span class="tok-fn">rename</span>(df, meta, {<span class="tok-str">"RK0600_000_scr"</span>: <span class="tok-str">"cb_scr"</span>})
+cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="tok-op">=</span>{<span class="tok-str">"금액"</span>: (<span class="tok-str">"상하단코딩"</span>, <span class="tok-str">"상위0.1%"</span>)}, out<span class="tok-op">=</span><span class="tok-str">"가명처리신청서.xlsx"</span>)</code></pre>
+    </div>
+
+    <div class="rm-version">
+      <div class="rm-version-head">
+        <span class="rm-v">v0.8.x</span>
+        <span class="rm-title">표준CSS 배치 request/response 이식</span>
+        <span class="rm-chip planned">예정</span>
+      </div>
+      <p class="rm-goal"><strong>목표</strong>: 회사 전반에서 쓰이는 <strong>표준CSS</strong> request/response 배치 포맷(현 SAS 매크로 2종)의 생성·읽기를 cidas로 이식. 요약항목 <code>read_css</code>와는 무관한 별개 도메인(약어만 겹침)</p>
+      <ul class="rm-list">
+        <li class="todo"><strong>표준CSS 포맷 스펙 정의</strong> — SAS 매크로 2종에서 request/response 레이아웃을 추출해 스키마(또는 상수)로 고정</li>
+        <li class="todo"><strong>request 생성기</strong>: DataFrame을 받아 표준CSS request 배치 파일로 출력(출력 함수 부류 — 상위 디렉토리 자동 생성·표준 로깅 재사용)</li>
+        <li class="todo"><strong>response 리더</strong>: 표준CSS response 파일을 DataFrame으로 변환. v0.4 컬럼-정보 규약(공통 <code>dtypes</code>·<code>key_cols</code>·<code>backend</code>) 준수</li>
+        <li class="todo"><code>docs/</code>에 사용 예시 + SAS 매크로 ↔ cidas 대응표 문서화</li>
       </ul>
     </div>
 
@@ -1284,7 +1304,7 @@ result <span class="tok-op">=</span> cs.<span class="tok-fn">sql</span>(<span cl
     <h1 class="section-title" style="margin-top:var(--space-2)">업데이트 기록</h1>
 
     <div class="changelog-item">
-      <div class="changelog-version"><div class="v">v0.3.0</div><div class="d">개발 중</div></div>
+      <div class="changelog-version"><div class="v">v0.3.0</div><div class="d">2026-06-15</div></div>
       <div class="changelog-content">
         <strong>패키지 rename — <code>cskim</code> → <code>cidas</code> / <code>nice-cidas</code> + src 레이아웃 (BREAKING)</strong>
         <ul>
@@ -1293,6 +1313,7 @@ result <span class="tok-op">=</span> cs.<span class="tok-fn">sql</span>(<span cl
           <li><strong>새 repo 이식</strong>: 기존 <code>cskim_py_lib</code> 히스토리를 <code>nice-cidas</code>로 이식, 옛 repo는 아카이브 보관. re-export shim 없음(사용자가 직접 마이그레이션)</li>
           <li><strong>브랜드 에셋 추가</strong>: 사이다 컵 아이콘·Open Graph 이미지(<code>assets/cidas-icon.*</code>·<code>cidas-og.*</code>). README 상단 배너, 본 가이드북 hero 반영</li>
           <li><strong>모듈 docstring 복원</strong>: rename 과정에서 누락됐던 모듈 최상단 docstring을 원본 기준으로 복원. <code>utils</code>·<code>system</code>·<code>data</code>·<code>nw</code> 4개 모듈에 공개 함수 목록·동작 요약 추가, <code>__init__.py</code> 패키지 docstring을 모듈별 함수 카탈로그 상세본으로 교체(<code>import cidas as cs</code> 반영). 함수 단위 docstring은 기존과 동일</li>
+          <li><strong>로드맵 v0.4+ 재정비</strong>: 상세 로드맵을 반영해 로드맵 탭의 v0.4 이후를 재구성 — read 표준화·SQL 분리·Data Step(<code>.cs</code> 네임스페이스)·검증 자동화(+<code>pseudonym_form</code>)·표준CSS 배치. 범용 검증(v0.7)을 특정 부서용 표준CSS(v0.8)보다 앞에 배치</li>
           <li><strong>마이그레이션</strong>: <code>import cskim as cs</code> → <code>import cidas as cs</code>로 변경 후 <code>uv add</code>로 재설치</li>
         </ul>
       </div>
