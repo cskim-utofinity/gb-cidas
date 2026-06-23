@@ -10,7 +10,7 @@
 <meta property="og:description" content="신용평가 업무 및 데이터 분석 효율성을 높이기 위한 사내용 Python 유틸리티 패키지 가이드북입니다.">
 <meta property="og:image" content="https://cskim-utofinity.github.io/gb-cidas/cidas-og.png">
 <meta property="og:site_name" content="NICE평가정보 cidas">
-<title>cidas / nice-cidas v0.3 — 가이드북</title>
+<title>cidas / nice-cidas v0.4 — 가이드북</title>
 <style>
   /* =========================================================
    * NICE평가정보 Design System 기반 토큰 (단독 동작, 인라인)
@@ -237,7 +237,8 @@
 
   /* ── Callout ── */
   .callout{border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);margin:var(--space-3) 0;font-size:13.5px;line-height:1.65;border-left:4px solid;}
-  .callout strong{display:block;margin-bottom:2px;}
+  /* 콜아웃 맨 앞의 제목용 볼드만 블록(줄바꿈). 문장 중간 인라인 볼드는 자연스럽게 흐르게 둠 */
+  .callout > strong:first-child{display:block;margin-bottom:2px;}
   .callout-info{background:var(--color-primary-tint-10);border-left-color:var(--color-primary);color:var(--color-text-sub);}
   .callout-info strong{color:var(--color-primary);}
   .callout-warning{background:#FFF8E1;border-left-color:var(--color-warning);color:#7a5d00;}
@@ -443,7 +444,7 @@
     <span class="header-tag">Credit Analysis &amp; Data Processing Utilities</span>
   </a>
   <div class="header-right">
-    <span class="header-version">v0.3.0</span>
+    <span class="header-version">v0.4.0</span>
     <button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="다크 모드로 전환" title="다크 모드">☾</button>
   </div>
 </header>
@@ -455,6 +456,7 @@
   <a class="tab-link"        data-page="system"     onclick="showPage('system');return false;"   href="#">system <span class="tab-badge">메모리</span></a>
   <a class="tab-link"        data-page="data"       onclick="showPage('data');return false;"     href="#">data <span class="tab-badge">DataFrame</span></a>
   <a class="tab-link"        data-page="nw"         onclick="showPage('nw');return false;"       href="#">nw <span class="tab-badge">사내 시스템</span></a>
+  <a class="tab-link"        data-page="config"     onclick="showPage('config');return false;"   href="#">config <span class="tab-badge">설정</span></a>
   <a class="tab-link"        data-page="roadmap"    onclick="showPage('roadmap');return false;"  href="#">로드맵</a>
   <a class="tab-link"        data-page="changelog"  onclick="showPage('changelog');return false;" href="#">변경이력</a>
 </nav>
@@ -473,7 +475,7 @@
       <p class="subtitle">신용평가 업무 및 데이터 분석 과정에서의 효율성을 높이기 위해 개발된 사내용 Python 유틸리티 패키지입니다. 반복적인 로깅, 대용량 데이터의 메모리 관리, NW 시스템 추출 결과의 Pandas/Polars DataFrame 변환, 요약항목 스키마(TOML) 관리 기능을 제공합니다.</p>
       <div class="badges">
         <span class="badge-pill">Python ≥3.11, &lt;3.12</span>
-        <span class="badge-pill">v0.3.0</span>
+        <span class="badge-pill">v0.4.0</span>
         <span class="badge-pill">Pandas + Polars</span>
         <span class="badge-pill new">스키마 번들 내장</span>
       </div>
@@ -506,6 +508,11 @@
           <h3>NW 시스템 연동</h3>
           <p>사내 NW 출력 파일(.gz) 직접 파싱. 쿼리·스코어·요약항목 세 종류, TOML 스키마 내장.</p>
         </div>
+        <div class="card" onclick="showPage('config')">
+          <div class="card-label">config</div>
+          <h3>프로젝트/세션 설정</h3>
+          <p>backend·base_dir·encoding·delimiter·schema_dir을 <code>.cidas/config.toml</code>·<code>set_config</code>로 일원화. 5-티어 우선순위.</p>
+        </div>
       </div>
     </div>
 
@@ -518,11 +525,11 @@
 <span class="tok-fn">uv</span> add git+https://cbgitlab.nicecredit.co.kr/cskim/nice-cidas.git
 
 <span class="tok-cmt"># 특정 버전 (태그 지정)</span>
-<span class="tok-fn">uv</span> add git+https://cbgitlab.nicecredit.co.kr/cskim/nice-cidas.git@v0.3.0</code></pre>
+<span class="tok-fn">uv</span> add git+https://cbgitlab.nicecredit.co.kr/cskim/nice-cidas.git@v0.4.0</code></pre>
       <p>업그레이드하려면, 작업폴더 <code>pyproject.toml</code>의 <code>nice-cidas</code> 의존성에 박힌 <code>rev</code> 값을 새 태그로 바꾼 뒤 <code>uv sync</code> 합니다.</p>
-      <pre data-lang="toml"><code>nice-cidas = { git = <span class="tok-str">"https://cbgitlab.nicecredit.co.kr/cskim/nice-cidas.git"</span>, rev = <span class="tok-str">"v0.3.0"</span> }</code></pre>
+      <pre data-lang="toml"><code>nice-cidas = { git = <span class="tok-str">"https://cbgitlab.nicecredit.co.kr/cskim/nice-cidas.git"</span>, rev = <span class="tok-str">"v0.4.0"</span> }</code></pre>
       <pre data-lang="bash"><code><span class="tok-fn">uv</span> sync</code></pre>
-      <div class="callout callout-info" style="font-size:13px;">분석 안정성을 위해 각 작업폴더는 <code>rev = "v0.3.0"</code>처럼 <strong>버전을 고정</strong>해 설치합니다. 이 경우 <code>uv lock --upgrade-package nice-cidas</code>은 <code>rev</code>가 고정돼 있어 동작하지 않으므로, 위처럼 <code>rev</code> 값을 직접 바꾸고 <code>uv sync</code> 해야 합니다.</div>
+      <div class="callout callout-info" style="font-size:13px;">분석 안정성을 위해 각 작업폴더는 <code>rev = "v0.4.0"</code>처럼 <strong>버전을 고정</strong>해 설치합니다. 이 경우 <code>uv lock --upgrade-package nice-cidas</code>은 <code>rev</code>가 고정돼 있어 동작하지 않으므로, 위처럼 <code>rev</code> 값을 직접 바꾸고 <code>uv sync</code> 해야 합니다.</div>
 
       <h3>요구사항 · 의존성</h3>
       <p><strong>Python</strong> <code>&gt;=3.11, &lt;3.12</code> · 런타임 의존성(<code>uv add</code> 시 자동 해결):</p>
@@ -586,7 +593,7 @@ final_df <span class="tok-op">=</span> cs.<span class="tok-fn">merge</span>(
 )
 
 <span class="tok-cmt"># 5. parquet 저장 (pandas/polars 자동 분기)</span>
-cs.<span class="tok-fn">to_parquet</span>(final_df, <span class="tok-str">"data/out/result.parquet"</span>)
+cs.<span class="tok-fn">write_parquet</span>(final_df, <span class="tok-str">"data/out/result.parquet"</span>)
 
 <span class="tok-cmt"># 6. 완료 알림</span>
 cs.<span class="tok-fn">tsprint</span>(<span class="tok-str">"변수 생성 및 병합 완료"</span>)</code></pre>
@@ -621,7 +628,7 @@ pd_df <span class="tok-op">=</span> pl_df.<span class="tok-fn">to_pandas</span>(
   </div>
 
   <footer>
-    <strong>cidas / nice-cidas v0.3</strong> — Data Analysis &amp; System Management Utilities for Credit Analysts<br>
+    <strong>cidas / nice-cidas v0.4</strong> — Data Analysis &amp; System Management Utilities for Credit Analysts<br>
     Author: CS KIM · Credit Rating, Digital Transformation, AI/LLM for Finance
   </footer>
 </div>
@@ -751,7 +758,7 @@ cs.<span class="tok-fn">resolve_base_dir</span>(<span class="tok-str">"../data/r
       </div>
     </div>
   </div>
-  <footer><strong>cidas / nice-cidas v0.3</strong> — utils 모듈</footer>
+  <footer><strong>cidas / nice-cidas v0.4</strong> — utils 모듈</footer>
 </div>
 
 
@@ -817,7 +824,7 @@ cs.<span class="tok-fn">release_memory</span>()</code></pre>
     cs.<span class="tok-fn">chk_memory</span>()  <span class="tok-cmt"># 내부적으로 GC + malloc_trim 수행</span></code></pre>
     </div>
   </div>
-  <footer><strong>cidas / nice-cidas v0.3</strong> — system 모듈</footer>
+  <footer><strong>cidas / nice-cidas v0.4</strong> — system 모듈</footer>
 </div>
 
 
@@ -839,33 +846,42 @@ cs.<span class="tok-fn">release_memory</span>()</code></pre>
     <!-- read_csv -->
     <div id="data-read-csv">
       <h2>read_csv()</h2>
-      <p>CSV 파일을 읽어 DataFrame으로 변환합니다. 구분자 기본값은 <code>|</code>(파이프)입니다.</p>
+      <p>CSV 파일을 읽어 DataFrame으로 변환합니다. 구분자 기본값은 <code>|</code>(파이프)입니다. <strong>(v0.4)</strong> <code>.gz</code> 입력을 자동 감지·해제하며(확장자 <code>.gz</code> 또는 매직바이트 <code>1f 8b</code>), <code>polars</code>+<code>cp949</code>+<code>.gz</code> 조합도 정상 동작합니다.</p>
       <div class="fn-sig">cs.<span class="fn-name">read_csv</span>(<span class="fn-param">file_path</span>, <span class="fn-param">total_cols</span>, ..., <span class="fn-param">encoding</span><span class="fn-default">='cp949'</span>, <span class="fn-param">base_dir</span><span class="fn-default">=None</span>, <span class="fn-param">backend</span><span class="fn-default">='pandas'</span>, <span class="fn-param">**kwargs</span>)</div>
       <div class="table-wrap"><table>
         <thead><tr><th>파라미터</th><th>타입</th><th>기본값</th><th>설명</th><th></th></tr></thead>
         <tbody>
           <tr><td><code>file_path</code></td><td class="td-type">str</td><td class="td-default">—</td><td>파일 경로 또는 파일명. 파일명만 입력 시 <code>base_dir</code> 하에서 자동 탐색</td><td></td></tr>
           <tr><td><code>total_cols</code></td><td class="td-type">list</td><td class="td-default">—</td><td>전체 컬럼 목록 (순서 일치 필요)</td><td></td></tr>
-          <tr><td><code>int_cols</code></td><td class="td-type">list</td><td class="td-default">None</td><td>Int32로 처리할 컬럼. <code>str_cols</code>와 상호 배타적</td><td></td></tr>
-          <tr><td><code>str_cols</code></td><td class="td-type">list</td><td class="td-default">None</td><td>string으로 처리할 컬럼. <code>int_cols</code>와 상호 배타적</td><td></td></tr>
+          <tr><td><code>int_cols</code></td><td class="td-type">list</td><td class="td-default">None</td><td><em>[deprecated]</em> int32로 처리할 컬럼(나머지는 str). <code>dtypes</code>로 대체 — 호출 시 안내. <code>str_cols</code>와 상호 배타적</td><td></td></tr>
+          <tr><td><code>str_cols</code></td><td class="td-type">list</td><td class="td-default">None</td><td><em>[deprecated]</em> str로 처리할 컬럼(나머지는 int32). <code>dtypes</code>로 대체 — 호출 시 안내. <code>int_cols</code>와 상호 배타적</td><td></td></tr>
+          <tr><td><code>dtypes</code></td><td class="td-type">dict</td><td class="td-default">None</td><td>그룹형 <code>{kind: 컬럼명 | [컬럼명…]}</code> override. 베이스 dtype 위에 지정 컬럼만 교체(같은 타입 컬럼을 묶어 반복 제거). kind=<code>str</code>/<code>int8</code>/<code>int16</code>/<code>int32</code>/<code>int64</code>/<code>float32</code>/<code>float64</code>. 예: <code>{"int32": ["amt","cnt"], "float64": "rate"}</code>. 한 컬럼을 둘 이상 그룹에 넣으면 오류</td><td><span class="td-new">v0.4</span></td></tr>
+          <tr><td><code>default_dtype</code></td><td class="td-type">str</td><td class="td-default">'str'</td><td><code>dtypes</code>·<code>int_cols</code>·<code>str_cols</code>에 안 잡힌 컬럼의 베이스 kind. 예: <code>dtypes={"str":["id"]}, default_dtype="int32"</code></td><td><span class="td-new">v0.4</span></td></tr>
           <tr><td><code>delimiter</code></td><td class="td-type">str</td><td class="td-default">'|'</td><td>구분자</td><td></td></tr>
           <tr><td><code>sort_keys</code></td><td class="td-type">list</td><td class="td-default">None</td><td>로드 후 정렬 기준 컬럼</td><td></td></tr>
           <tr><td><code>chk_memory</code></td><td class="td-type">bool</td><td class="td-default">True</td><td>메모리 용량 출력 여부</td><td></td></tr>
           <tr><td><code>nrows</code></td><td class="td-type">int</td><td class="td-default">None</td><td>일부 행만 읽을 때</td><td></td></tr>
           <tr><td><code>encoding</code></td><td class="td-type">str</td><td class="td-default">'cp949'</td><td>파일 인코딩</td><td><span class="td-new">v0.2</span></td></tr>
-          <tr><td><code>backend</code></td><td class="td-type">str</td><td class="td-default">'pandas'</td><td>'pandas' 또는 'polars'</td><td></td></tr>
+          <tr><td><code>backend</code></td><td class="td-type">str</td><td class="td-default">'pandas'</td><td>'pandas' 또는 'polars' (v0.4 — 약어 <code>'pd'</code>/<code>'pl'</code>도 허용)</td><td></td></tr>
           <tr><td><code>base_dir</code></td><td class="td-type">str</td><td class="td-default">None</td><td>파일 탐색 기준 경로. 파일명만 입력 시 자동 적용. <code>None</code>이면 <code>../data/raw</code>(폴더명 <code>notebooks</code>에서 실행 시)·<code>./data/raw</code>·<code>./data</code>·<code>./</code> 순 자동 탐색 → <a href="#" onclick="showPage('utils');return false;">규칙 상세</a></td><td><span class="td-new">v0.2.1</span></td></tr>
           <tr><td><code>**kwargs</code></td><td class="td-type">—</td><td class="td-default">—</td><td>하위 read 함수(<code>pd.read_csv</code>/<code>pl.read_csv</code>)에 그대로 전달</td><td><span class="td-new">v0.2.1</span></td></tr>
         </tbody>
       </table></div>
-      <pre data-lang="python"><code>total_cols <span class="tok-op">=</span> [<span class="tok-str">'credit_info_id'</span>, <span class="tok-str">'rbc_no'</span>, <span class="tok-str">'lmt_amt'</span>, <span class="tok-str">'bal'</span>]
-str_cols   <span class="tok-op">=</span> [<span class="tok-str">'credit_info_id'</span>, <span class="tok-str">'rbc_no'</span>]
+      <pre data-lang="python"><code>total_cols <span class="tok-op">=</span> [<span class="tok-str">'credit_info_id'</span>, <span class="tok-str">'rbc_no'</span>, <span class="tok-str">'vouch_fg'</span>, <span class="tok-str">'mrtg_fg'</span>,
+              <span class="tok-str">'fst_lmt_amt'</span>, <span class="tok-str">'lmt_amt'</span>, <span class="tok-str">'bal'</span>]
 
-<span class="tok-cmt"># 파일명만 입력 → data/raw/data.txt 자동 탐색</span>
-df <span class="tok-op">=</span> cs.<span class="tok-fn">read_csv</span>(<span class="tok-str">"data.txt"</span>, total_cols<span class="tok-op">=</span>total_cols, str_cols<span class="tok-op">=</span>str_cols)
+<span class="tok-cmt"># v0.4 — 그룹형 dtypes: 같은 타입 컬럼을 한 묶음으로 (나머지는 default_dtype 기본 str)</span>
+df <span class="tok-op">=</span> cs.<span class="tok-fn">read_csv</span>(<span class="tok-str">"data.txt"</span>, total_cols<span class="tok-op">=</span>total_cols,
+                 dtypes<span class="tok-op">=</span>{<span class="tok-str">'float64'</span>: [<span class="tok-str">'fst_lmt_amt'</span>, <span class="tok-str">'lmt_amt'</span>, <span class="tok-str">'bal'</span>],
+                         <span class="tok-str">'int8'</span>: [<span class="tok-str">'vouch_fg'</span>, <span class="tok-str">'mrtg_fg'</span>]})
 
-<span class="tok-cmt"># polars — pl.DataFrame 반환</span>
-df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_csv</span>(<span class="tok-str">"data.txt"</span>, total_cols<span class="tok-op">=</span>total_cols, str_cols<span class="tok-op">=</span>str_cols, backend<span class="tok-op">=</span><span class="tok-str">'polars'</span>)</code></pre>
+<span class="tok-cmt"># "나머지는 int32"는 default_dtype으로 (예전 str_cols 재현)</span>
+df2 <span class="tok-op">=</span> cs.<span class="tok-fn">read_csv</span>(<span class="tok-str">"data.txt"</span>, total_cols<span class="tok-op">=</span>total_cols,
+                  dtypes<span class="tok-op">=</span>{<span class="tok-str">'str'</span>: [<span class="tok-str">'credit_info_id'</span>, <span class="tok-str">'rbc_no'</span>]}, default_dtype<span class="tok-op">=</span><span class="tok-str">'int32'</span>)
+
+<span class="tok-cmt"># polars(약어 'pl') + .gz 자동 감지·해제(cp949 포함)</span>
+df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_csv</span>(<span class="tok-str">"data.txt.gz"</span>, total_cols<span class="tok-op">=</span>total_cols,
+                    dtypes<span class="tok-op">=</span>{<span class="tok-str">'float64'</span>: [<span class="tok-str">'lmt_amt'</span>, <span class="tok-str">'bal'</span>]}, backend<span class="tok-op">=</span><span class="tok-str">'pl'</span>)</code></pre>
     </div>
 
     <div class="section-divider"></div>
@@ -893,11 +909,11 @@ df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_parquet</span>(
 
     <div class="section-divider"></div>
 
-    <!-- to_parquet -->
-    <div id="data-to-parquet">
-      <h2>to_parquet() <span class="new-chip">v0.2 신규</span></h2>
-      <p>DataFrame을 <code>.parquet</code>으로 저장합니다. pandas/polars를 자동 분기하며, 상위 디렉토리가 없으면 자동으로 생성합니다.</p>
-      <div class="fn-sig">cs.<span class="fn-name">to_parquet</span>(<span class="fn-param">df</span>, <span class="fn-param">file_path</span>: str, <span class="fn-param">chk_memory</span><span class="fn-default">=True</span>, <span class="fn-param">**kwargs</span>) → None</div>
+    <!-- write_parquet -->
+    <div id="data-write-parquet">
+      <h2>write_parquet() <span class="new-chip">v0.4 이름 변경</span></h2>
+      <p>DataFrame을 <code>.parquet</code>으로 저장합니다. pandas/polars를 자동 분기하며, 상위 디렉토리가 없으면 자동으로 생성합니다. 기존 <code>to_parquet</code>에서 polars 규약에 맞춰 이름이 바뀌었습니다(<code>to_parquet</code>도 호출 시 안내 후 동일 동작).</p>
+      <div class="fn-sig">cs.<span class="fn-name">write_parquet</span>(<span class="fn-param">df</span>, <span class="fn-param">file_path</span>: str, <span class="fn-param">chk_memory</span><span class="fn-default">=True</span>, <span class="fn-param">**kwargs</span>) → None</div>
       <div class="table-wrap"><table>
         <thead><tr><th>파라미터</th><th>타입</th><th>기본값</th><th>설명</th></tr></thead>
         <tbody>
@@ -908,7 +924,7 @@ df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_parquet</span>(
         </tbody>
       </table></div>
       <pre data-lang="python"><code><span class="tok-cmt"># pandas / polars 자동 분기 + 표준 로그 출력</span>
-cs.<span class="tok-fn">to_parquet</span>(df, <span class="tok-str">"data/out/result.parquet"</span>)
+cs.<span class="tok-fn">write_parquet</span>(df, <span class="tok-str">"data/out/result.parquet"</span>)
 <span class="tok-cmt"># [2026-06-08 14:00:00] --> 저장 완료: 1,234,567행 45열 // 2.34GB → data/out/result.parquet</span></code></pre>
     </div>
 
@@ -960,8 +976,9 @@ final_pl <span class="tok-op">=</span> cs.<span class="tok-fn">merge</span>(
     backend<span class="tok-op">=</span><span class="tok-str">'polars'</span>
 )</code></pre>
     </div>
+
   </div>
-  <footer><strong>cidas / nice-cidas v0.3</strong> — data 모듈</footer>
+  <footer><strong>cidas / nice-cidas v0.4</strong> — data 모듈</footer>
 </div>
 
 
@@ -978,18 +995,22 @@ final_pl <span class="tok-op">=</span> cs.<span class="tok-fn">merge</span>(
     <!-- 스키마 탐색 체계 -->
     <div>
       <h2 style="margin-top:0">스키마 탐색 체계</h2>
-      <p>각 스키마 파일은 아래 순서로 처음 발견되는 곳에서 로드됩니다. 외부 디렉토리에 일부 파일만 두면 그 파일만 외부본이 적용되고, 나머지는 번들이 사용됩니다.</p>
+      <p><code>schema_dir</code>은 v0.4부터 <strong>프로젝트/세션 설정 체계</strong>에 통합되었습니다(<a href="#" onclick="showPage('config');return false;">설정 탭</a> 참조). 각 스키마 파일은 아래 순서로 처음 발견되는 곳에서 로드됩니다. 외부 디렉토리에 일부 파일만 두면 그 파일만 외부본이 적용되고, 나머지는 번들이 사용됩니다.</p>
       <div class="schema-tier">
         <div class="tier-row">
           <div class="tier-num">1</div>
-          <div class="tier-body"><strong>set_schema_dir 지정 경로</strong> <span>cs.set_schema_dir("/path") — 세션 전역, 최우선</span></div>
+          <div class="tier-body"><strong>set_schema_dir / set_config(schema_dir=) 지정 경로</strong> <span>세션 전역, 최우선 (set_schema_dir은 set_config 호환 래퍼)</span></div>
         </div>
         <div class="tier-row">
           <div class="tier-num">2</div>
           <div class="tier-body"><strong>DA_SCHEMA_DIR 환경변수</strong> <span>export DA_SCHEMA_DIR=/path (bash) · $env:DA_SCHEMA_DIR="..." (PowerShell)</span></div>
         </div>
-        <div class="tier-row fallback">
+        <div class="tier-row">
           <div class="tier-num">3</div>
+          <div class="tier-body"><strong>프로젝트 설정 파일 schema_dir</strong> <span>.cidas/config.toml → pyproject.toml [tool.cidas] (v0.4+)</span></div>
+        </div>
+        <div class="tier-row fallback">
+          <div class="tier-num">4</div>
           <div class="tier-body"><strong>패키지 번들 기본값</strong> <span>cidas/_schemas/ — 항상 존재, 최종 fallback</span></div>
         </div>
       </div>
@@ -1007,10 +1028,12 @@ rbc_no   = <span class="tok-str">"str"</span>
 inq_date = <span class="tok-str">"str"</span>
 cnt      = <span class="tok-str">"int32"</span>
 
-<span class="tok-cmt"># scores.toml — [start, end, dtype] (고정폭 위치 포함)</span>
+<span class="tok-cmt"># scores.toml — named-key inline table + 표 레벨 fmt (v0.4)</span>
+[scores.DEFAULT]
+fmt = <span class="tok-str">"fixed"</span>   <span class="tok-cmt"># 현재 "fixed"만 처리, "delimited"는 예약</span>
 [scores.DEFAULT.fields]
-rbc_no = [<span class="tok-num">11</span>, <span class="tok-num">24</span>, <span class="tok-str">"str"</span>]
-scr    = [<span class="tok-num">130</span>, <span class="tok-num">134</span>, <span class="tok-str">"int16"</span>]
+rbc_no = { start = <span class="tok-num">11</span>, end = <span class="tok-num">24</span>, dtype = <span class="tok-str">"str"</span> }
+scr    = { start = <span class="tok-num">130</span>, end = <span class="tok-num">134</span>, dtype = <span class="tok-str">"int16"</span> }
 
 <span class="tok-cmt"># css.toml — 컬럼명 → dtype 사전</span>
 [css.dtypes]
@@ -1036,8 +1059,9 @@ VAR_001   = <span class="tok-str">"float32"</span></code></pre>
           <tr><td><code>chunk_size</code></td><td class="td-type">int</td><td class="td-default">None</td><td>pandas 전용. 청크 단위 읽기. <code>backend='polars'</code>면 전체 읽기</td><td></td></tr>
           <tr><td><code>encoding</code></td><td class="td-type">str</td><td class="td-default">'cp949'</td><td>인코딩 방식</td><td></td></tr>
           <tr><td><code>rename</code></td><td class="td-type">dict</td><td class="td-default">None</td><td><code>{원래명: 새이름}</code> 반환 직전 컬럼명 일괄 변경. 청크 사용 시 미적용</td><td><span class="td-new">v0.2</span></td></tr>
+          <tr><td><code>dtypes</code></td><td class="td-type">dict</td><td class="td-default">None</td><td>그룹형 <code>{kind: 컬럼명 | [컬럼명…]}</code> override. 스키마 dtype 위에 지정 컬럼만 교체(query 키는 str 강제 안 함)</td><td><span class="td-new">v0.4</span></td></tr>
           <tr><td><code>base_dir</code></td><td class="td-type">str</td><td class="td-default">None</td><td>파일 탐색 기준 경로. 파일명만 입력 시 자동 적용. <code>None</code>이면 <code>../data/raw</code>(폴더명 <code>notebooks</code>에서 실행 시)·<code>./data/raw</code>·<code>./data</code>·<code>./</code> 순 자동 탐색 → <a href="#" onclick="showPage('utils');return false;">규칙 상세</a></td><td><span class="td-new">v0.2.1</span></td></tr>
-          <tr><td><code>backend</code></td><td class="td-type">str</td><td class="td-default">'pandas'</td><td>'pandas' 또는 'polars'</td><td></td></tr>
+          <tr><td><code>backend</code></td><td class="td-type">str</td><td class="td-default">'pandas'</td><td>'pandas' 또는 'polars' (v0.4 — 약어 <code>'pd'</code>/<code>'pl'</code>도 허용)</td><td></td></tr>
           <tr><td><code>**kwargs</code></td><td class="td-type">—</td><td class="td-default">—</td><td>하위 read 함수(<code>pd.read_csv</code>/<code>pl.read_csv</code>)에 그대로 전달</td><td><span class="td-new">v0.2.1</span></td></tr>
         </tbody>
       </table></div>
@@ -1075,8 +1099,10 @@ reader <span class="tok-op">=</span> cs.<span class="tok-fn">read_query</span>(<
           <tr><td><code>nrows</code></td><td class="td-type">int</td><td class="td-default">None</td><td>일부 행만 읽을 때 (D 행 기준)</td><td></td></tr>
           <tr><td><code>encoding</code></td><td class="td-type">str</td><td class="td-default">'cp949'</td><td>인코딩 방식</td><td></td></tr>
           <tr><td><code>rename</code></td><td class="td-type">dict</td><td class="td-default">None</td><td>반환 직전 컬럼명 일괄 변경</td><td><span class="td-new">v0.2</span></td></tr>
+          <tr><td><code>key_cols</code></td><td class="td-type">list</td><td class="td-default">None</td><td>str로 강제할 key 컬럼(식별번호 leading zero 보존). 미지정 시 공통 키 <code>rbc_no</code>/<code>org_nm</code>/<code>base_date</code></td><td><span class="td-new">v0.4</span></td></tr>
+          <tr><td><code>dtypes</code></td><td class="td-type">dict</td><td class="td-default">None</td><td>그룹형 <code>{kind: 컬럼명 | [컬럼명…]}</code> override. 스키마/<code>field_definitions</code> dtype 위에 지정 컬럼만 교체. <strong>키 str 강제가 우선</strong>. 스키마 호출은 값이 출력(prefix) 컬럼명(예: <code>{"int32": ["RK0600_scr"]}</code>)</td><td><span class="td-new">v0.4</span></td></tr>
           <tr><td><code>base_dir</code></td><td class="td-type">str</td><td class="td-default">None</td><td>파일 탐색 기준 경로. 파일명만 입력 시 자동 적용. <code>None</code>이면 <code>../data/raw</code>(폴더명 <code>notebooks</code>에서 실행 시)·<code>./data/raw</code>·<code>./data</code>·<code>./</code> 순 자동 탐색 → <a href="#" onclick="showPage('utils');return false;">규칙 상세</a></td><td><span class="td-new">v0.2.1</span></td></tr>
-          <tr><td><code>backend</code></td><td class="td-type">str</td><td class="td-default">'pandas'</td><td>'pandas' 또는 'polars'</td><td></td></tr>
+          <tr><td><code>backend</code></td><td class="td-type">str</td><td class="td-default">'pandas'</td><td>'pandas' 또는 'polars' (v0.4 — 약어 <code>'pd'</code>/<code>'pl'</code>도 허용)</td><td></td></tr>
           <tr><td><code>file_info</code></td><td class="td-type">list</td><td class="td-default">None</td><td><em>(deprecated)</em> <code>[경로, NW번호, 스코어코드]</code>. <code>nw_no</code>/<code>score_cd</code>/<code>base_dir</code> 사용 권장</td><td></td></tr>
           <tr><td><code>**kwargs</code></td><td class="td-type">—</td><td class="td-default">—</td><td>시그니처 일관성용으로 받지만 <strong>전달하지 않고 무시</strong>. 고정폭을 직접 파싱해 감쌀 단일 read 함수가 없음(<code>read_scr</code>만 예외)</td><td><span class="td-new">v0.2.1</span></td></tr>
         </tbody>
@@ -1103,7 +1129,8 @@ df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_scr</span>(<spa
         <thead><tr><th>파라미터</th><th>타입</th><th>기본값</th><th>설명</th><th></th></tr></thead>
         <tbody>
           <tr><td><code>total_cols</code></td><td class="td-type">list</td><td class="td-default">None</td><td>전체 컬럼 목록. <strong>생략 시 리스트 파일로 자동 구성</strong></td><td><span class="td-new">v0.2</span></td></tr>
-          <tr><td><code>str_cols</code></td><td class="td-type">list</td><td class="td-default">None</td><td>문자열 유지 컬럼. 명시 시 나머지는 <code>Int32</code>. None이면 <code>css.toml</code>의 dtype으로 자동 매핑(미정의 컬럼은 <code>Int32</code> fallback)</td><td></td></tr>
+          <tr><td><code>str_cols</code></td><td class="td-type">list</td><td class="td-default">None</td><td><em>[deprecated]</em> str 유지 컬럼 → <code>dtypes</code>로 대체(호출 시 안내). <strong>(v0.4) 모드스위치 아님</strong> — <code>css.toml</code> lookup을 유지한 채 그 위에 str overlay(기존엔 lookup을 끄고 나머지=<code>Int32</code>였음)</td><td></td></tr>
+          <tr><td><code>dtypes</code></td><td class="td-type">dict</td><td class="td-default">None</td><td>그룹형 <code>{kind: 컬럼명 | [컬럼명…]}</code> override. <code>css.toml</code> lookup(미정의 컬럼은 <code>int32</code> fallback) 위에 지정 컬럼만 교체. 키(앞 2개 또는 <code>key_cols</code>)는 <strong>항상 str 강제</strong></td><td><span class="td-new">v0.4</span></td></tr>
           <tr><td><code>file_path</code></td><td class="td-type">str</td><td class="td-default">None</td><td>결과파일 경로 또는 파일명</td><td></td></tr>
           <tr><td><code>nw_no</code></td><td class="td-type">str</td><td class="td-default">None</td><td>NW 번호. 자동 탐색에 사용</td><td></td></tr>
           <tr><td><code>nrows</code></td><td class="td-type">int</td><td class="td-default">None</td><td>일부 행만 읽을 때</td><td></td></tr>
@@ -1115,7 +1142,7 @@ df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_scr</span>(<spa
           <tr><td><code>key_cols</code></td><td class="td-type">list</td><td class="td-default">None</td><td>리스트항목 앞에 붙일 key 컬럼. 기본 <code>['rbc_no','base_date']</code>. 식별자가 <code>biz_no</code>/<code>crp_no</code>면 지정</td><td><span class="td-new">v0.2</span></td></tr>
           <tr><td><code>rename</code></td><td class="td-type">dict</td><td class="td-default">None</td><td>반환 직전 컬럼명 일괄 변경. chunksize 사용 시 미적용</td><td><span class="td-new">v0.2</span></td></tr>
           <tr><td><code>base_dir</code></td><td class="td-type">str</td><td class="td-default">None</td><td>파일 탐색 기준 경로. 파일명만 입력 시 자동 적용. <code>None</code>이면 <code>../data/raw</code>(폴더명 <code>notebooks</code>에서 실행 시)·<code>./data/raw</code>·<code>./data</code>·<code>./</code> 순 자동 탐색 → <a href="#" onclick="showPage('utils');return false;">규칙 상세</a></td><td><span class="td-new">v0.2.1</span></td></tr>
-          <tr><td><code>backend</code></td><td class="td-type">str</td><td class="td-default">'pandas'</td><td>'pandas' 또는 'polars'</td><td></td></tr>
+          <tr><td><code>backend</code></td><td class="td-type">str</td><td class="td-default">'pandas'</td><td>'pandas' 또는 'polars' (v0.4 — 약어 <code>'pd'</code>/<code>'pl'</code>도 허용)</td><td></td></tr>
           <tr><td><code>file_info</code></td><td class="td-type">list</td><td class="td-default">None</td><td><em>(deprecated)</em> <code>[경로, NW번호]</code>. <code>nw_no</code>/<code>base_dir</code> 사용 권장</td><td></td></tr>
           <tr><td><code>**kwargs</code></td><td class="td-type">—</td><td class="td-default">—</td><td>하위 read 함수(<code>pd.read_csv</code>/<code>pl.read_csv</code>, 내부 헬퍼 포함)에 그대로 전달</td><td><span class="td-new">v0.2.1</span></td></tr>
         </tbody>
@@ -1141,6 +1168,10 @@ df_css <span class="tok-op">=</span> cs.<span class="tok-fn">read_css</span>(
 
 <span class="tok-cmt"># 기존 방식 (total_cols 직접 입력) — 그대로 동작</span>
 df_css <span class="tok-op">=</span> cs.<span class="tok-fn">read_css</span>(total_cols<span class="tok-op">=</span>my_vars, file_path<span class="tok-op">=</span><span class="tok-str">"N001_CSALINF.gz"</span>)
+
+<span class="tok-cmt"># dtypes로 일부 컬럼만 타입 지정 (css.toml lookup 위에 overlay, 권장)</span>
+df_css <span class="tok-op">=</span> cs.<span class="tok-fn">read_css</span>(total_cols<span class="tok-op">=</span>my_vars,
+    dtypes<span class="tok-op">=</span>{<span class="tok-str">'float64'</span>: [<span class="tok-str">'V001'</span>, <span class="tok-str">'V002'</span>]}, file_path<span class="tok-op">=</span><span class="tok-str">"N001_CSALINF.gz"</span>)
 
 <span class="tok-cmt"># NW번호 자동 탐색 + polars</span>
 df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_css</span>(nw_no<span class="tok-op">=</span><span class="tok-str">"12345"</span>, backend<span class="tok-op">=</span><span class="tok-str">'polars'</span>)</code></pre>
@@ -1187,7 +1218,66 @@ df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_css</span>(nw_n
       </div>
     </div>
   </div>
-  <footer><strong>cidas / nice-cidas v0.3</strong> — nw 모듈</footer>
+  <footer><strong>cidas / nice-cidas v0.4</strong> — nw 모듈</footer>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAGE: config
+════════════════════════════════════════════ -->
+<div class="page" id="page-config">
+  <div class="page-inner">
+    <div class="module-header">
+      <div class="mod-name">설정 <span class="badge-pill">v0.4 신규</span></div>
+      <p>흩어져 있던 설정 소스(<code>backend</code>·<code>base_dir</code>·<code>encoding</code>·<code>delimiter</code>·<code>schema_dir</code>)를 한 우선순위 체계로 모읍니다. read 함수군과 <code>concat</code>·<code>merge</code>의 기본값이 이 체인으로 해소됩니다(명시 호출은 그대로 우선). stdlib <code>tomllib</code>만 쓰므로 추가 의존성이 없습니다.</p>
+    </div>
+
+    <div class="callout callout-info">
+      <strong>우선순위 (높은 순)</strong>
+      ①함수 인자 → ②세션 <code>set_config()</code> → ③환경변수(<code>DA_SCHEMA_DIR</code>) → ④프로젝트 설정 파일(<code>.cidas/config.toml</code> → <code>pyproject.toml [tool.cidas]</code>) → ⑤내장 기본값
+    </div>
+
+    <div>
+      <h2 style="margin-top:0">후보 설정 항목</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>키</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr><td><code>backend</code></td><td>기본 백엔드 <code>'pandas'</code>/<code>'polars'</code> (약어 <code>'pd'</code>/<code>'pl'</code>)</td></tr>
+          <tr><td><code>base_dir</code></td><td>파일 탐색 기준 경로 (자동탐색 고정)</td></tr>
+          <tr><td><code>encoding</code></td><td>read/write 기본 인코딩</td></tr>
+          <tr><td><code>delimiter</code></td><td><code>read_csv</code> 기본 구분자</td></tr>
+          <tr><td><code>schema_dir</code></td><td>외부 스키마 디렉토리. <code>DA_SCHEMA_DIR</code> 대체 가능. <a href="#" onclick="showPage('nw');return false;">nw 스키마 탐색</a>의 파일 단위 fallback으로 작동</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div>
+      <h2>세션 API</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>함수</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><code>set_config(key=value)</code></td><td>세션 전역 설정 지정. 미지 키는 <code>ValueError</code></td></tr>
+          <tr><td><code>get_config(key, default=None)</code></td><td>현재 적용되는 설정값을 우선순위 체인으로 해소해 조회</td></tr>
+          <tr><td><code>reload_config()</code></td><td>프로젝트 설정 파일 캐시 무효화(파일 수정·CWD 변경 후)</td></tr>
+          <tr><td><code>set_schema_dir(path)</code></td><td><code>set_config(schema_dir=...)</code> 호환 래퍼(호출 시 스키마 캐시 비움). <code>None</code>이면 세션 설정 해제</td></tr>
+        </tbody>
+      </table></div>
+      <p>프로젝트 설정 파일은 CWD에서 상위로 올라가며 처음 만나는 것을 사용합니다(하위폴더 노트북·monorepo 대응). 상대경로(<code>schema_dir</code>·<code>base_dir</code>)는 설정 파일 폴더 기준으로 절대화됩니다.</p>
+
+      <pre data-lang="python"><code><span class="tok-cmt"># 세션 전역 — 이 노트북은 polars로</span>
+cs.<span class="tok-fn">set_config</span>(backend<span class="tok-op">=</span><span class="tok-str">"polars"</span>, base_dir<span class="tok-op">=</span><span class="tok-str">"data/raw"</span>)
+cs.<span class="tok-fn">get_config</span>(<span class="tok-str">"backend"</span>)   <span class="tok-cmt"># → 'polars'</span>
+cs.<span class="tok-fn">reload_config</span>()        <span class="tok-cmt"># 설정 파일 편집·CWD 변경 후 캐시 무효화</span></code></pre>
+
+      <pre data-lang="toml"><code><span class="tok-cmt"># 프로젝트 루트 .cidas/config.toml (없으면 pyproject.toml [tool.cidas])</span>
+backend    = <span class="tok-str">"polars"</span>
+base_dir   = <span class="tok-str">"./data/raw"</span>
+encoding   = <span class="tok-str">"cp949"</span>
+delimiter  = <span class="tok-str">"|"</span>
+schema_dir = <span class="tok-str">"./schemas"</span>   <span class="tok-cmt"># nw 스키마(queries/scores/css.toml) 탐색용</span></code></pre>
+    </div>
+  </div>
+  <footer><strong>cidas / nice-cidas v0.4</strong> — 설정</footer>
 </div>
 
 
@@ -1219,39 +1309,17 @@ df_pl <span class="tok-op">=</span> cs.<span class="tok-fn">read_css</span>(nw_n
 
     <div class="rm-version">
       <div class="rm-version-head">
-        <span class="rm-v">v0.4.x</span>
-        <span class="rm-title">read 함수군 인터페이스 표준화</span>
-        <span class="rm-chip planned">예정</span>
-      </div>
-      <p class="rm-goal"><strong>목표</strong>: read 함수군(<code>read_csv</code>·<code>read_query</code>·<code>read_scr</code>·<code>read_css</code>)의 인터페이스 일관화 — <code>read_scr</code> 구분자 포맷 대응, 컬럼-정보 파라미터 통일, <code>backend</code> 약어</p>
-      <ul class="rm-list">
-        <li class="todo"><strong>read_scr 구분자 포맷 지원</strong>: 고정길이(fixed-width) 외 구분자(delimiter) 포맷도 읽도록 확장(<code>fmt</code> 파라미터). <code>scores.toml</code> 필드 서술자를 named-key inline table로 이주(v0.7 가명처리 메타 슬롯 수용 확장형)</li>
-        <li class="todo"><strong>공통 <code>dtypes={컬럼: dtype}</code> override 도입</strong> — 각 함수의 기존 dtype 해소 위에 층으로 적용해 일부 컬럼만 덮어쓰기</li>
-        <li class="todo"><code>read_csv</code>를 <code>_DTYPE_SPEC</code> 어휘로 편입 + <code>int_cols</code>/<code>str_cols</code>를 deprecated shorthand로 강등</li>
-        <li class="todo"><code>read_css</code> <code>str_cols</code> 모드스위치 해소(<code>dtypes</code>는 css.toml lookup 위 override) + <code>str_cols</code> deprecate</li>
-        <li class="todo"><code>key_cols</code> 파라미터명 공통화 — str 강제는 <code>read_scr</code>·<code>read_css</code> 한정, <code>read_csv</code>·<code>read_query</code>는 dtype 해소 준수</li>
-        <li class="todo"><strong>하위호환 — 매번 안내</strong>: deprecated 파라미터·shorthand 안내는 기존 deprecated 함수(<code>infile_*</code>·<code>merge_seq</code> → <code>deprecated_alias</code>)와 동일하게 <strong>쓸 때마다</strong> 출력(프로세스당 1회인 <code>notify_deprecated_once</code> 아님)</li>
-        <li class="todo"><strong><code>backend</code> 약어 허용</strong>: <code>'pandas'</code>→<code>'pd'</code>, <code>'polars'</code>→<code>'pl'</code></li>
-      </ul>
-      <pre data-lang="python"><code><span class="tok-cmt"># read_scr — 구분자 포맷</span>
-df <span class="tok-op">=</span> cs.<span class="tok-fn">read_scr</span>(nw_no<span class="tok-op">=</span><span class="tok-str">"12345"</span>, score_cd<span class="tok-op">=</span><span class="tok-str">"SC_001"</span>, fmt<span class="tok-op">=</span><span class="tok-str">"delimited"</span>)
-
-<span class="tok-cmt"># 공통 dtypes override + backend 약어</span>
-df <span class="tok-op">=</span> cs.<span class="tok-fn">read_csv</span>(<span class="tok-str">"a.txt"</span>, dtypes<span class="tok-op">=</span>{<span class="tok-str">"cnt"</span>: <span class="tok-str">"int8"</span>, <span class="tok-str">"amt"</span>: <span class="tok-str">"float64"</span>}, backend<span class="tok-op">=</span><span class="tok-str">"pl"</span>)</code></pre>
-    </div>
-
-    <div class="rm-version">
-      <div class="rm-version-head">
         <span class="rm-v">v0.5.x</span>
         <span class="rm-title">SQL 인터페이스 (Proc SQL)</span>
         <span class="rm-chip planned">예정</span>
       </div>
-      <p class="rm-goal"><strong>목표</strong>: SAS <code>Proc SQL</code>을 DuckDB 백엔드로 이식</p>
+      <p class="rm-goal"><strong>목표</strong>: SAS의 <code>Proc SQL</code>을 Python에서 그대로 씁니다 — <code>cs.sql("SELECT ...")</code> 한 번으로 DuckDB 위에서 집계하고 결과를 DataFrame으로 받습니다(Polars·Arrow 제로카피로 빠름).</p>
       <ul class="rm-list">
         <li class="todo"><strong>DuckDB 연동</strong>: <code>pyproject.toml</code>에 <code>duckdb</code> 추가, <code>read_css</code>·<code>read_query</code> 결과를 DuckDB In-Memory DB로 로드하는 유틸</li>
         <li class="todo"><strong>sql() 함수 구현</strong>: DuckDB를 백엔드로, <code>SELECT</code> 결과를 Polars DataFrame으로 반환</li>
         <li class="todo">DuckDB ↔ Polars Zero-Copy 전환 (Apache Arrow 공유 메모리)</li>
         <li class="todo">쿼리 결과 로깅 (건수, 컬럼수, 소요시간, 메모리 변화)</li>
+        <li class="todo"><strong>함께 처리할 수정 — <code>read_css</code> <code>_LIST</code> 추출포맷 확인 확장</strong>: <code>css_00009</code>뿐 아니라 <strong><code>css_90009</code></strong>도 허용. <code>css_90009</code>는 동일 포맷이나 <strong>요약항목이 99개를 초과</strong>할 때 나오는 추출포맷</li>
       </ul>
       <pre data-lang="python"><code><span class="tok-cmt"># sql() — DuckDB 백엔드, Polars 반환</span>
 result <span class="tok-op">=</span> cs.<span class="tok-fn">sql</span>(<span class="tok-str">"""
@@ -1268,13 +1336,13 @@ result <span class="tok-op">=</span> cs.<span class="tok-fn">sql</span>(<span cl
         <span class="rm-title">Data Step 이식 (코드 표준화)</span>
         <span class="rm-chip planned">예정</span>
       </div>
-      <p class="rm-goal"><strong>목표</strong>: SAS <code>Data Step</code> 패턴을 네이티브 <code>pl.DataFrame</code>에 등록한 <code>.cs</code> 네임스페이스 메서드로 제공. Polars 기본 메서드와 자유롭게 체이닝하며 SAS LOG식 단계별 로그 출력</p>
+      <p class="rm-goal"><strong>목표</strong>: SAS <code>Data Step</code>의 자주 쓰는 패턴(조건 분기·등급화·누적·첫/마지막 행)을 <code>df.cs.*</code> 메서드로 제공합니다. Polars 기본 메서드와 한 체인에서 섞어 쓰고, SAS LOG처럼 단계마다 행·열 수가 찍히며, read→가공→저장을 한 흐름으로 잇습니다.</p>
       <ul class="rm-list">
         <li class="todo"><code>pl.api.register_dataframe_namespace("cs")</code> 등록 + <code>import cidas</code> 시 자동 로드</li>
         <li class="todo">조건부 처리: <code>case_when</code> / <code>cut</code></li>
         <li class="todo">첫행·마지막행: <code>add_first_flag</code> / <code>add_last_flag</code> + <code>keep_first</code> / <code>keep_last</code></li>
         <li class="todo">누적·상태유지: <code>cumsum</code> / <code>row_number</code></li>
-        <li class="todo"><strong><code>to_csv</code> 신규</strong> + <code>concat</code>·<code>merge</code>·<code>to_parquet</code>·<code>to_csv</code>의 <code>.cs</code> 미러 — read → 가공 → 저장을 한 체인으로</li>
+        <li class="todo"><strong><code>write_csv</code> 신규</strong> + <code>concat</code>·<code>merge</code>·<code>write_parquet</code>·<code>write_csv</code>의 <code>.cs</code> 미러 — read → 가공 → 저장을 한 체인으로</li>
         <li class="todo"><strong>전역 로그 제어 <code>verbose=True/False</code></strong> (구 '로그 강화' 흡수) — 표준 로그 포맷·<code>read_*</code>/<code>merge</code> 로깅은 <code>df_summary</code>로 v0.2.0 선반영됨</li>
       </ul>
       <pre data-lang="python"><code><span class="tok-kw">import</span> polars <span class="tok-kw">as</span> pl
@@ -1295,7 +1363,7 @@ df <span class="tok-op">=</span> (
         <span class="rm-title">검증 자동화</span>
         <span class="rm-chip planned">예정</span>
       </div>
-      <p class="rm-goal"><strong>목표</strong>: 회원사 배치 제공 및 비식별 처리 과정에서 빈번한 인적 오류를 자동 차단</p>
+      <p class="rm-goal"><strong>목표</strong>: 배치 제공·비식별 처리에서 자주 나는 사람 실수를 함수 차원에서 미리 막습니다. 최종 데이터로 가명처리 신청 Excel 양식도 자동으로 만들어 줍니다.</p>
       <ul class="rm-list">
         <li class="todo">각 부서 주요 체크리스트를 함수 옵션으로 구현 (<code>validate=True</code>)</li>
         <li class="todo">전체 데이터셋 대상 통합 검증 함수 (<code>cs.validate()</code>) 구현</li>
@@ -1314,7 +1382,7 @@ cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="
         <span class="rm-title">표준CSS 배치 request/response 이식</span>
         <span class="rm-chip planned">예정</span>
       </div>
-      <p class="rm-goal"><strong>목표</strong>: 회사 전반에서 쓰이는 <strong>표준CSS</strong> request/response 배치 포맷(현 SAS 매크로 2종)의 생성·읽기를 cidas로 이식. 요약항목 <code>read_css</code>와는 무관한 별개 도메인(약어만 겹침)</p>
+      <p class="rm-goal"><strong>목표</strong>: 회사 표준CSS request/response 배치 포맷(현재 SAS 매크로 2종)의 생성·읽기를 cidas로 옮깁니다. DataFrame↔배치파일 왕복(생성기+리더)을 한 릴리스에서 함께 제공합니다. (요약항목 <code>read_css</code>와는 약어만 겹치는 별개 도메인입니다.)</p>
       <ul class="rm-list">
         <li class="todo"><strong>표준CSS 포맷 스펙 정의</strong> — SAS 매크로 2종에서 request/response 레이아웃을 추출해 스키마(또는 상수)로 고정</li>
         <li class="todo"><strong>request 생성기</strong>: DataFrame을 받아 표준CSS request 배치 파일로 출력(출력 함수 부류 — 상위 디렉토리 자동 생성·표준 로깅 재사용)</li>
@@ -1329,7 +1397,7 @@ cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="
         <span class="rm-title">Polars 기본 전환</span>
         <span class="rm-chip planned">예정</span>
       </div>
-      <p class="rm-goal"><strong>목표</strong>: 사용자들이 Polars를 충분히 사용해 본 뒤, v1.0 출시 직전에 기본 백엔드를 전환 (그 전까지 Polars는 <code>backend='polars'</code> opt-in으로 유지)</p>
+      <p class="rm-goal"><strong>목표</strong>: 사용자들이 Polars를 충분히 써본 뒤, v1.0 직전에 기본 백엔드를 Polars로 바꿉니다(그 전까지는 <code>backend='polars'</code> opt-in 유지). pandas 경로는 호환 레이어로 남깁니다.</p>
       <ul class="rm-list">
         <li class="todo"><code>backend</code> 기본값을 <code>'polars'</code>로 변경, Pandas 경로를 호환 레이어로 강등</li>
         <li class="todo">Pandas 3.0(<code>pyarrow</code> 엔진 + CoW) 옵션 병행 유지 (Polars 미지원 ML 파이프라인 대응)</li>
@@ -1343,11 +1411,23 @@ cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="
         <span class="rm-title">안정화 릴리스</span>
         <span class="rm-chip planned">예정</span>
       </div>
-      <p class="rm-goal"><strong>목표</strong>: 전체 기능 완성 후 분석망 배포 기준 버전 확정</p>
+      <p class="rm-goal"><strong>목표</strong>: 전체 기능을 마친 뒤 통합 테스트·문서·의존성 고정을 거쳐 분석망 배포 기준 버전을 확정합니다.</p>
       <ul class="rm-list">
         <li class="todo">전 모듈 통합 테스트</li>
         <li class="todo">의존성 패키지 버전 고정 및 <code>.whl</code> 배포 패키지 최종 검증</li>
         <li class="todo">전체 문서(<code>docs/</code>) 갱신</li>
+      </ul>
+    </div>
+
+    <div class="rm-version">
+      <div class="rm-version-head">
+        <span class="rm-v">백로그</span>
+        <span class="rm-title">버전 미정</span>
+        <span class="rm-chip planned">예정</span>
+      </div>
+      <p class="rm-goal">언젠가 해야 하지만 실데이터 확인 등 선결 조건이 있어 특정 버전에 배정하지 않은 항목.</p>
+      <ul class="rm-list">
+        <li class="todo"><strong><code>read_scr</code> 구분자(delimited) 포맷 파싱</strong> — 현재 고정길이(fixed-width)만 지원. <code>read_query</code>·<code>read_css</code>처럼 구분자 포맷도 읽도록 확장(<code>fmt</code> 파라미터 또는 자동 감지). <strong>선결</strong>: 실제 구분자 SCR 레이아웃·구분자·H/T 관례를 실데이터로 확인해야 구현 가능. <strong>토대 선반영됨</strong>(v0.4): <code>scores.toml</code> 표 레벨 <code>fmt</code> 필드 + named-key 구조가 <code>"delimited"</code>를 예약 — 구조 재이주 없이 파싱 로직만 추가하면 됨</li>
       </ul>
     </div>
 
@@ -1372,7 +1452,7 @@ cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="
       </div>
     </div>
   </div>
-  <footer><strong>cidas / nice-cidas v0.3</strong> — 개발 로드맵</footer>
+  <footer><strong>cidas / nice-cidas v0.4</strong> — 개발 로드맵</footer>
 </div>
 
 <!-- ════════════════════════════════════════════
@@ -1384,17 +1464,26 @@ cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="
     <h1 class="section-title" style="margin-top:var(--space-2)">업데이트 기록</h1>
 
     <div class="changelog-item">
+      <div class="changelog-version"><div class="v">v0.4.0</div><div class="d">2026-06-23</div></div>
+      <div class="changelog-content">
+        <ul>
+          <li>저장 함수 이름이 <strong><code>write_parquet</code></strong>으로 통일됐습니다(기존 <code>to_parquet</code>도 안내와 함께 그대로 동작합니다).</li>
+          <li><code>backend</code> 인자에 <strong><code>pd</code>/<code>pl</code> 약어</strong>를 쓸 수 있습니다.</li>
+          <li><code>read_csv</code>가 <strong><code>.gz</code> 압축 파일을 자동으로 풀어</strong> 읽으며, polars로 cp949 압축을 읽을 때 나던 오류가 사라졌습니다.</li>
+          <li>모든 read 함수에서 컬럼 타입을 <strong><code>dtypes</code> 그룹형 한 가지 방식</strong>(<code>{타입: 컬럼들}</code>)으로 지정합니다. <code>read_csv</code>는 <code>default_dtype</code>로 '나머지' 타입을 정할 수 있습니다(기존 <code>int_cols</code>/<code>str_cols</code>도 안내와 함께 계속 동작합니다).</li>
+          <li>백엔드·경로·인코딩·스키마 위치 등 프로젝트 기본값을 <strong><code>.cidas/config.toml</code>이나 <code>set_config()</code></strong>로 한 번에 정해 둘 수 있습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="changelog-item">
       <div class="changelog-version"><div class="v">v0.3.0</div><div class="d">2026-06-15</div></div>
       <div class="changelog-content">
-        <strong>패키지 rename — <code>cskim</code> → <code>cidas</code> / <code>nice-cidas</code> + src 레이아웃 (BREAKING)</strong>
         <ul>
-          <li><strong>패키지 rename</strong>: import명 <code>cskim</code> → <code>cidas</code>, 배포명 <code>nice-cidas</code> (<code>scikit-learn</code>/<code>sklearn</code> 패턴). <code>import cidas as cs</code>로 사용(alias <code>cs</code> 유지). 설치 <code>uv add git+https://cbgitlab.nicecredit.co.kr/cskim/nice-cidas.git</code></li>
-          <li><strong>flat → src 레이아웃 전환</strong>: <code>cskim/</code> → <code>src/cidas/</code>. <code>pyproject.toml</code> <code>name="nice-cidas"</code>·<code>package-dir</code>·<code>packages.find</code>, <code>__version__</code>은 <code>importlib.metadata.version("nice-cidas")</code> 연동. 번들 스키마 <code>cidas/_schemas/*.toml</code></li>
-          <li><strong>새 repo 이식</strong>: 기존 <code>cskim_py_lib</code> 히스토리를 <code>nice-cidas</code>로 이식, 옛 repo는 아카이브 보관. re-export shim 없음(사용자가 직접 마이그레이션)</li>
-          <li><strong>브랜드 에셋 추가</strong>: 사이다 컵 아이콘·Open Graph 이미지(<code>assets/cidas-icon.*</code>·<code>cidas-og.*</code>). README 상단 배너, 본 가이드북 hero 반영</li>
-          <li><strong>모듈 docstring 복원</strong>: rename 과정에서 누락됐던 모듈 최상단 docstring을 원본 기준으로 복원. <code>utils</code>·<code>system</code>·<code>data</code>·<code>nw</code> 4개 모듈에 공개 함수 목록·동작 요약 추가, <code>__init__.py</code> 패키지 docstring을 모듈별 함수 카탈로그 상세본으로 교체(<code>import cidas as cs</code> 반영). 함수 단위 docstring은 기존과 동일</li>
-          <li><strong>로드맵 v0.4+ 재정비</strong>: 상세 로드맵을 반영해 로드맵 탭의 v0.4 이후를 재구성 — read 표준화·SQL 분리·Data Step(<code>.cs</code> 네임스페이스)·검증 자동화(+<code>pseudonym_form</code>)·표준CSS 배치. 범용 검증(v0.7)을 특정 부서용 표준CSS(v0.8)보다 앞에 배치</li>
-          <li><strong>마이그레이션</strong>: <code>import cskim as cs</code> → <code>import cidas as cs</code>로 변경 후 <code>uv add</code>로 재설치</li>
+          <li>패키지 이름이 <code>cskim</code>에서 <strong><code>cidas</code></strong>(설치명 <code>nice-cidas</code>)로 바뀌었습니다.</li>
+          <li>이제 <strong><code>import cidas as cs</code></strong>로 사용하며(별칭 <code>cs</code>는 유지), 설치는 <code>uv add</code>로 합니다.</li>
+          <li>내부 구조를 src 레이아웃으로 정리하고 브랜드 아이콘·문서를 보강했습니다.</li>
+          <li>기존 사용자는 <strong>import 문만 바꿔 재설치</strong>하면 됩니다.</li>
         </ul>
       </div>
     </div>
@@ -1402,11 +1491,9 @@ cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="
     <div class="changelog-item">
       <div class="changelog-version"><div class="v">v0.2.2</div><div class="d">2026-06-10</div></div>
       <div class="changelog-content">
-        <strong>read_css 버그 수정 — _LIST 오인·key 컬럼 dtype</strong>
         <ul>
-          <li><strong>_LIST 파일 본파일 오인 수정</strong>: <code>nw_no</code> 자동 탐색이 같은 경로의 요약항목 리스트(<code>_LIST</code>) 파일을 본파일로 잡아 <code>..._LIST_LIST</code>를 찾다 오류 나던 문제. 본파일 탐색에서 <code>_LIST</code>도 제외</li>
-          <li><strong>key 컬럼 항상 str</strong>: 요약항목 파일 앞 2개 컬럼(식별번호·기준일)을 경로·<code>css.toml</code> 등록 여부와 무관하게 항상 str로 처리. 13자리 식별번호가 <code>Int32</code>로 overflow하던 <code>cannot safely cast non-equivalent int64 to int32</code> 해결</li>
-          <li><strong>css.toml 정리</strong>: 공통 키 컬럼 dtype 항목 제거 → 요약항목 dtype 전용</li>
+          <li><code>read_css</code>가 요약항목 리스트(<code>_LIST</code>) 파일을 <strong>본파일로 잘못 잡던 문제</strong>를 고쳤습니다.</li>
+          <li>13자리 식별번호·기준일 컬럼이 이제 <strong>항상 문자열</strong>로 안전하게 읽힙니다(숫자로 처리돼 깨지던 문제 해결).</li>
         </ul>
       </div>
     </div>
@@ -1414,11 +1501,9 @@ cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="
     <div class="changelog-item">
       <div class="changelog-version"><div class="v">v0.2.1</div><div class="d">2026-06-09</div></div>
       <div class="changelog-content">
-        <strong>base_dir 자동 탐색 기본값 + 경로 처리 로직 단일화</strong>
         <ul>
-          <li><strong>base_dir 기본값 <code>'data/raw'</code> → <code>None</code></strong>: <code>read_csv</code>·<code>read_query</code>·<code>read_scr</code>·<code>read_css</code>. 노트북이 <code>작업폴더/notebooks</code>든 <code>작업폴더</code>든 동일하게 <code>작업폴더/data/raw</code> 인식 (CWD 기준 우선순위 자동 탐색)</li>
-          <li><strong>resolve_base_dir() 공개 API</strong>: 현재 잡히는 기준 경로를 직접 확인. 자동 탐색 실패 시 우선순위 경로 안내</li>
-          <li><strong>경로 처리 로직 단일화(리팩터링)</strong>: 4개 함수에 흩어져 중복되던 경로 결합·자동 탐색을 <code>utils</code> 공용 헬퍼(<code>resolve_path</code>·<code>find_in_base_dir</code>)로 일원화. 동작 변화 없음</li>
+          <li><code>base_dir</code>을 지정하지 않아도 노트북 위치와 무관하게 <strong><code>작업폴더/data/raw</code>를 자동 인식</strong>합니다.</li>
+          <li><code>cs.resolve_base_dir(None)</code>로 현재 잡히는 기준 경로를 확인할 수 있습니다.</li>
         </ul>
       </div>
     </div>
@@ -1426,43 +1511,54 @@ cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="
     <div class="changelog-item">
       <div class="changelog-version"><div class="v">v0.2.0</div><div class="d">2026-06-08</div></div>
       <div class="changelog-content">
-        <strong>안정화 릴리스 — dev1(05-29)·dev2(06-05) 단계 통합</strong>
         <ul>
-          <li><strong>스키마 외부화 + 번들 내재화</strong>: read 함수의 하드코딩 스키마를 외부 TOML(queries/scores/css.toml)로 분리하고 패키지 번들(<code>cidas/_schemas/</code>)에 포함 → 설치 직후 셋업 없이 동작. <code>cs.set_schema_dir()</code>·<code>DA_SCHEMA_DIR</code>로 파일 단위 override, <code>cs.reload_schemas()</code> 캐시 무효화. <code>cskim._registry</code>(lazy 로드+캐시) 도입</li>
-          <li><strong>queries.toml 구조 변경 (BREAKING)</strong>: 컬럼별 혼합 dtype 지원. 기존 구조는 마이그레이션 필요</li>
-          <li><strong>base_dir + 파일 자동 탐색</strong>: 모든 read 함수에 <code>base_dir</code> 파라미터. 파일명·식별 인자만으로 탐색</li>
-          <li><strong>css.toml 전수 갱신</strong>: 12,290항목 → 18,029항목 (신규 5,739개, TEST·TEMP 30개 제외)</li>
-          <li><strong>read_css 리스트 파일 자동 구성</strong>: <code>css_list</code>·<code>key_cols</code> 파라미터. <code>total_cols</code> 생략 가능</li>
-          <li><strong>rename 파라미터</strong>: <code>read_query</code>·<code>read_scr</code>·<code>read_css</code> 공통. 반환 직전 컬럼명 일괄 변경</li>
-          <li><strong>to_parquet() / export_schemas() / update_css_schema() 추가</strong>: 저장·스키마 운영 유틸</li>
-          <li><strong>dtype 체계 단일화</strong>: <code>int8</code>~<code>int64</code>·<code>float32/64</code>. 공통 <code>_DTYPE_SPEC</code> 단일 진실원천. <code>df_summary</code> 표준 한 줄 로그 도입</li>
-          <li><strong>merge_seq → merge</strong> + 구버전 alias(<code>infile_*</code>) 1회 안내. <strong>read_csv encoding 파라미터</strong>(<code>'cp949'</code>)</li>
-          <li><strong>버그 수정</strong>: read_csv tsnow 미호출, merge 조용한 실패, release_memory Windows, tsnow <code>%D→%d</code>, read_scr HDT 필터 등</li>
+          <li>read 함수의 컬럼·타입 정의를 <strong>TOML 스키마로 분리해 패키지에 기본 내장</strong>했습니다(설치 직후 셋업 없이 동작).</li>
+          <li>사내 표준 스키마는 <strong>외부 파일로 교체</strong>할 수 있습니다(<code>set_schema_dir</code>/<code>DA_SCHEMA_DIR</code>).</li>
+          <li><code>read_css</code>가 요약항목 리스트 파일로 <strong>컬럼을 자동 구성</strong>합니다.</li>
+          <li>저장 함수(<code>to_parquet</code>)와 스키마 운영 유틸(<code>export_schemas</code>·<code>update_css_schema</code>)이 추가됐습니다.</li>
         </ul>
       </div>
     </div>
 
     <div class="changelog-item">
       <div class="changelog-version"><div class="v">v0.1.0</div><div class="d">2026-05-27</div></div>
-      <div class="changelog-content">Polars opt-in 백엔드 추가 (<code>backend='polars'</code>). 설치 방법 <code>uv add</code>로 전환. <code>pyarrow≥13.0.0</code> 의존성 추가.</div>
+      <div class="changelog-content">
+        <ul>
+          <li>모든 read 함수에 <strong>Polars 백엔드</strong>를 선택 옵션으로 추가했습니다(<code>backend='polars'</code>, 기본값은 기존 pandas 유지).</li>
+          <li>설치 방식이 <strong><code>uv add</code></strong>로 바뀌었습니다.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="changelog-item">
       <div class="changelog-version"><div class="v">v0.0.3</div><div class="d">2026-05-20</div></div>
-      <div class="changelog-content"><code>requires-python</code> 조건 완화 (<code>≥3.11</code>). ROADMAP 추가.</div>
+      <div class="changelog-content">
+        <ul>
+          <li>파이썬 버전 요구사항을 <strong><code>&gt;=3.11</code></strong>로 완화했습니다.</li>
+          <li>개발 로드맵(<code>ROADMAP.md</code>) 문서를 추가했습니다.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="changelog-item">
       <div class="changelog-version"><div class="v">v0.0.2</div><div class="d">2026-05-12</div></div>
-      <div class="changelog-content"><code>read_csv</code> 파라미터명 오타 수정 (<code>filepath</code> → <code>file_path</code>).</div>
+      <div class="changelog-content">
+        <ul>
+          <li><code>read_csv</code>의 파라미터 이름 오타(<strong><code>filepath</code> → <code>file_path</code></strong>)를 바로잡았습니다.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="changelog-item">
       <div class="changelog-version"><div class="v">v0.0.1</div><div class="d">2026-02-26</div></div>
-      <div class="changelog-content">최초 릴리스.</div>
+      <div class="changelog-content">
+        <ul>
+          <li><strong>최초 릴리스</strong> — 시간·로깅(<code>utils</code>), 메모리 관리(<code>system</code>), 데이터 입출력(<code>data</code>), 분석망 연동(<code>nw</code>) 기능을 제공합니다.</li>
+        </ul>
+      </div>
     </div>
   </div>
-  <footer><strong>cidas / nice-cidas v0.3</strong> — Data Analysis &amp; System Management Utilities for Credit Analysts<br>
+  <footer><strong>cidas / nice-cidas v0.4</strong> — Data Analysis &amp; System Management Utilities for Credit Analysts<br>
     Author: CS KIM · Credit Rating, Digital Transformation, AI/LLM for Finance</footer>
 </div>
 
@@ -1495,7 +1591,7 @@ cs.<span class="tok-fn">pseudonym_form</span>(df, meta, deid_policy<span class="
   // 페이지 로드 시 해시 복원
   function restoreFromHash() {
     const hash = window.location.hash.replace('#', '');
-    const validPages = ['overview', 'utils', 'system', 'data', 'nw', 'roadmap', 'changelog'];
+    const validPages = ['overview', 'utils', 'system', 'data', 'nw', 'config', 'roadmap', 'changelog'];
     if (hash && validPages.includes(hash)) {
       showPage(hash);
     }
